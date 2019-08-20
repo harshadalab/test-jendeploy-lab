@@ -17,5 +17,14 @@ pipeline {
         echo 'Deployment done'
       }
     }
+    
+    stage('OnNonDeployableBranch') {
+      when { not { expression { env.BRANCH_NAME ==~ '(^hotfix[0-9].{2,4}$)|(^release[0-9].{2,4}$)|(^develop$)' } } }
+      steps {
+        script {
+          echo "Code will not be deployed from ${env.BRANCH_NAME} branch"
+        }
+      }
+    }
   }
 }
